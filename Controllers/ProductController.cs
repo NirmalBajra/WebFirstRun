@@ -24,6 +24,22 @@ public class ProductController : Controller
         return View(products);
     }
 
+    //Search product
+    [HttpPost]
+    public async Task<IActionResult> Search(string name)
+    {
+        var searchProduct = await dbContext.Products
+            .Where(x => x.Name.Contains(name))
+            .ToListAsync();
+
+        if(searchProduct.Count == 0)
+        {
+            ViewBag.Message = "No products found.";
+            return View(new List<Product>());
+        }
+        return View(searchProduct);
+    }
+
     // delete a product
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
