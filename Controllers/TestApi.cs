@@ -34,7 +34,6 @@ namespace WebFirstRun.Controllers
 
         //get list
         [HttpGet("/api/product-category/")]
-
         public async Task<IActionResult> GetProductCategories()
         {
             var productCategory = dbContext.ProductCategories.ToList();

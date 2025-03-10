@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WebFirstRun.Entity.Product>
+
+<h2>Search Product</h2>
+
+<form method="get">
+    <input type="text" name="searchTerm" placeholder="Product Name" />
+    <button type="submit">Search</button>
+</form>
+
+<h2>Product Table</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>
+                    @product.Category
+                </td>
+                <td>@product.Description</td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-primary">Update</a>
+                    <form asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to Delete this product?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
