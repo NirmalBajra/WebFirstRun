@@ -21,23 +21,29 @@ public class ProductController : Controller
             .Include(x => x.Category)
             .OrderBy(x => x.Name)
             .ToListAsync();
-        return View(products);
+
+        ProductVm vm = new ProductVm();
+        vm.Products = products;
+
+        return View(vm);
     }
 
     //Search product
-    [HttpPost]
-    public async Task<IActionResult> Search(string name)
+    [HttpGet]
+    public async Task<IActionResult> Search(ProductVm vm)
     {
         var searchProduct = await dbContext.Products
-            .Where(x => x.Name.Contains(name))
+            .Include(x => x.Category)
+            .Where(x => x.Name.Contains(vm.Name))
+            .OrderBy(x => x.Name)
             .ToListAsync();
 
-        if(searchProduct.Count == 0)
+        if (!searchProduct.Any())
         {
             ViewBag.Message = "No products found.";
-            return View(new List<Product>());
         }
-        return View(searchProduct);
+        vm.Products = searchProduct;
+        return View("Index",vm);
     }
 
     // delete a product
@@ -79,7 +85,7 @@ public class ProductController : Controller
             //Check for validation error
             if(!ModelState.IsValid)
             {
-                throw new Exception("Product Category Not Found.");
+                return View(vms);
             }
             //Check for name uniqueness
             
@@ -90,7 +96,8 @@ public class ProductController : Controller
 
             if(productCategory == null)
             {
-                throw new Exception("Product Category not Found.");
+                ModelState.AddModelError(nameof(CreateProductVms.ProductCategoryId),"Invalid Product Category.");
+                return View(vms);
             }
 
             //Create new product

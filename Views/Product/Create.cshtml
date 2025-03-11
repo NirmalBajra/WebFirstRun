@@ -12,7 +12,7 @@
             <input type="text" asp-for="Name" class="form-control" placeholder="Name" />
             <span class="text-danger" asp-validation-for="Name"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group"> 
             <label asp-for="ProductCategoryId"></label>
             <select class="form-control" asp-for="ProductCategoryId" asp-items="Model.ProductCategoriesSelectList()"></select>
             <span class="text-danger" asp-validation-for="ProductCategoryId"></span>

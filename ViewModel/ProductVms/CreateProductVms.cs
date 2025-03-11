@@ -16,8 +16,11 @@ public class CreateProductVms
         => new SelectList(
             //List of items
             ProductCategories,
+            //value
             nameof(ProductCategory.Id),
-            nameof(ProductCategory.Name)
+            //display text
+            nameof(ProductCategory.Name),
+            ProductCategoryId
         );
     public List<ProductCategory> ProductCategories;
 }

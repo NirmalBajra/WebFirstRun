@@ -1,14 +1,25 @@
-﻿@model IEnumerable<WebFirstRun.Entity.Product>
+﻿@using WebFirstRun.ViewModel.ProductVms;
+@model ProductVm;
 
 <h2>Search Product</h2>
 
-<form method="post" asp-action="Search">
-    <input type="text" name="name" placeholder="Product Name" />
+<form method="get" asp-action="Search">
+    <input type="text" asp-for="Name" placeholder="Product Name" />
     <button type="submit">Search</button>
 </form>
 
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p style="color: red;">@ViewBag.Message</p>
+}
+<br>
+<h2>Add Product</h2>
+<a asp-action="Create" class="btn btn-success">Add Product</a>
+
+<br><br>
+
 <h2>Product Table</h2>
-<table>
+<table class= "table" border="1">
     <thead>
         <tr>
             <th>Name</th>
@@ -18,16 +29,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var product in Model)
+        @foreach (var product in Model.Products)
         {
             <tr>
                 <td>@product.Name</td>
                 <td>
-                    @product.Category
+                    @Html.DisplayFor(modelItem => product.Category)
                 </td>
                 <td>@product.Description</td>
                 <td>
                     <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-primary">Update</a>
+
                     <form asp-action="Delete" asp-route-id="@product.Id" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to Delete this product?');">
                             Delete
